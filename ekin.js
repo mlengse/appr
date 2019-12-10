@@ -149,11 +149,27 @@ module.exports = class Ekin extends Core {
         fetch('/e-kinerja/v1/d_approve_kegiatan_tambahan/tabel_d_approve_kegiatan_tambahan', post)
       ])
 
-      wrapper.insertAdjacentHTML('afterend', await response.text())
-      wrapper.insertAdjacentHTML('afterend', await response2.text())
+      let [ text, text2] = await Promise.all([
+        response.text(),
+        response2.text()
+      ])
 
-      let table = document.getElementById('tabel_d_approve_realisasi_kegiatan').querySelectorAll('tr')
-      let table2 = document.getElementById('tabel_d_approve_kegiatan_tambahan').querySelectorAll('tr')
+      wrapper.insertAdjacentHTML('afterend', text )
+      wrapper.insertAdjacentHTML('afterend', text2 )
+
+      let table = document.getElementById('tabel_d_approve_realisasi_kegiatan')
+      if( table ) {
+        table = table.querySelectorAll('tr')
+      } else {
+        table = []
+      }
+      let table2 = document.getElementById('tabel_d_approve_kegiatan_tambahan')
+      if(table2){
+        table2 = table2.querySelectorAll('tr')
+      } else {
+        table2 = []
+      }
+
       let rows = [...table, ...table2]
       for (row of rows) {
         let texts = []
