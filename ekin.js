@@ -119,10 +119,10 @@ module.exports = class Ekin extends Core {
 
       eval(act)
 
-      if(act.includes('tambahan')){
-        return await simpan('d_approve_kegiatan_tambahan')
-      } else {
+      if(act.includes('klik_data_d_approve_realisasi_kegiatan')){
         return await simpan('d_approve_realisasi_kegiatan')
+      } else {
+        return await simpan('d_approve_kegiatan_tambahan')
       }
 
     }, act)
