@@ -55,7 +55,7 @@ module.exports = async () => {
                   act = acts.shift()
                   if(act.poin && act.act){
                     act.res = await ekin.approve(act.act)
-                    console.log(act)
+                    console.log(JSON.stringify(act))
                     poin += act.poin
                     console.log(poin)
     
