@@ -23,7 +23,7 @@ module.exports = async () => {
 
           let { tglLength, tglSum, bln, blnNum, thn } = ekin.tgl[a]
 
-          let maxPoin = Math.round(8500*(tglLength/(tglSum - 5)))
+          let maxPoin = Math.round(8500*((tglLength > 20 ? 20: tglLength)/(tglLength > 20 ? 20 : (tglSum - 5))))
 
           console.log(tglLength, tglSum, blnNum, thn, maxPoin)
 
