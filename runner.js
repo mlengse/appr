@@ -8,13 +8,28 @@ module.exports = async () => {
   try {
     await ekin.init()
 
+
     let lists = Object.keys(ekin.lists)
-    let tgls = Object.keys(ekin.tgl)
+    let tgls = Object.keys(ekin.tgl).reverse()
 
     for( a of tgls) {
-      if( a == 0 || (a == -1 && Number(ekin.moment().format('DD') < 5 ))) {
-        for( nama of lists ) {
-          console.log(nama)
+      for( nama of lists ) {
+        console.log(nama)
+	      if( a == 0 || 
+	      	( a == -1 && 
+	      		( (Number(ekin.moment().format('DD')) < 5 ) && 
+              (
+                nama === 'yuni' ||
+                nama === 'anjang' ||
+                nama === 'wagimin'
+            )) ||
+	      		( (Number(ekin.moment().format('DD')) < 3 ) && 
+              (
+                nama !== 'yuni' &&
+	      			  nama !== 'anjang' &&
+                nama !== 'wagimin'
+            ))
+          )) {
           await ekin.login(ekin.lists[nama])
     
           await ekin.getSatker()
