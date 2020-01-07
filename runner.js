@@ -17,7 +17,7 @@ module.exports = async () => {
         console.log(nama)
 	      if( a == 0 || 
 	      	( a == -1 && 
-	      		( (Number(ekin.moment().format('DD')) < 5 ) && 
+	      		( (Number(ekin.moment().format('DD')) < 7 ) && 
               (
                 nama === 'yuni' ||
                 nama === 'anjang' ||
@@ -47,7 +47,7 @@ module.exports = async () => {
           for(tamsil of tamsils){
             let indexNIPs = dataBawahan.map(({NIP_18}) => NIP_18 )
             let existsIndex = indexNIPs.indexOf(tamsil[1])
-            if(existsIndex > -1 && Number(parseFloat(tamsil[10])/100) < 1) {
+            if(existsIndex > -1 && ((a == 0 && Number(parseFloat(tamsil[10])/100) < 1) || a == -1)) {
               dataBawahan[existsIndex] = Object.assign({}, dataBawahan[existsIndex], {
                 tamsil,
                 poin: Number(tamsil[9].split('POIN').join('').trim()),

@@ -192,7 +192,9 @@ module.exports = class Ekin extends Core {
         // keg.keg = keg.text[1]
         // keg.jml = keg.text[2]
         keg.stat = texts[3]
+        console.log(keg)
         if(act && keg.stat.toLowerCase().includes('belum') && keg.bulan === bulan){
+          // console.log(keg)
           act = act.split('\n')
           keg.kode = act[8].split("'").join('').split(",").join('').trim()
           // act.shift()
