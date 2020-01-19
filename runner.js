@@ -8,13 +8,28 @@ module.exports = async () => {
   try {
     await ekin.init()
 
+
     let lists = Object.keys(ekin.lists)
-    let tgls = Object.keys(ekin.tgl)
+    let tgls = Object.keys(ekin.tgl).reverse()
 
     for( a of tgls) {
-      if( a == 0 || (a == -1 && Number(ekin.moment().format('DD')) < 5 )) {
-        for( nama of lists ) {
-          console.log(nama)
+      for( nama of lists ) {
+        console.log(nama)
+	      if( a == 0 || 
+	      	( a == -1 && 
+	      		( (Number(ekin.moment().format('DD')) < 7 ) && 
+              (
+                nama === 'yuni' ||
+                nama === 'anjang' ||
+                nama === 'wagimin'
+            )) ||
+	      		( (Number(ekin.moment().format('DD')) < 3 ) && 
+              (
+                nama !== 'yuni' &&
+	      			  nama !== 'anjang' &&
+                nama !== 'wagimin'
+            ))
+          )) {
           await ekin.login(ekin.lists[nama])
     
           await ekin.getSatker()
@@ -23,7 +38,7 @@ module.exports = async () => {
 
           let { tglLength, tglSum, bln, blnNum, thn } = ekin.tgl[a]
 
-          let maxPoin = Math.round(8500*(tglLength/tglSum))
+          let maxPoin = Math.round(8500*( a == 0 ? (tglLength < 20 ? (tglLength/tglSum) : 1 ) : 1 ))
 
           console.log(tglLength, tglSum, blnNum, thn, maxPoin)
 
@@ -32,7 +47,7 @@ module.exports = async () => {
           for(tamsil of tamsils){
             let indexNIPs = dataBawahan.map(({NIP_18}) => NIP_18 )
             let existsIndex = indexNIPs.indexOf(tamsil[1])
-            if(existsIndex > -1 && Number(parseFloat(tamsil[10])/100) < 1) {
+            if(existsIndex > -1 && ((a == 0 && Number(parseFloat(tamsil[10])/100) < 1) || a == -1)) {
               dataBawahan[existsIndex] = Object.assign({}, dataBawahan[existsIndex], {
                 tamsil,
                 poin: Number(tamsil[9].split('POIN').join('').trim()),
@@ -55,7 +70,7 @@ module.exports = async () => {
                   act = acts.shift()
                   if(act.poin && act.act){
                     act.res = await ekin.approve(act.act)
-                    console.log(act)
+                    console.log(JSON.stringify(act))
                     poin += act.poin
                     console.log(poin)
     

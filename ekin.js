@@ -119,10 +119,10 @@ module.exports = class Ekin extends Core {
 
       eval(act)
 
-      if(act.includes('tambahan')){
-        return await simpan('d_approve_kegiatan_tambahan')
-      } else {
+      if(act.includes('klik_data_d_approve_realisasi_kegiatan')){
         return await simpan('d_approve_realisasi_kegiatan')
+      } else {
+        return await simpan('d_approve_kegiatan_tambahan')
       }
 
     }, act)
@@ -149,11 +149,27 @@ module.exports = class Ekin extends Core {
         fetch('/e-kinerja/v1/d_approve_kegiatan_tambahan/tabel_d_approve_kegiatan_tambahan', post)
       ])
 
-      wrapper.insertAdjacentHTML('afterend', await response.text())
-      wrapper.insertAdjacentHTML('afterend', await response2.text())
+      let [ text, text2] = await Promise.all([
+        response.text(),
+        response2.text()
+      ])
 
-      let table = document.getElementById('tabel_d_approve_realisasi_kegiatan').querySelectorAll('tr')
-      let table2 = document.getElementById('tabel_d_approve_kegiatan_tambahan').querySelectorAll('tr')
+      wrapper.insertAdjacentHTML('afterend', text )
+      wrapper.insertAdjacentHTML('afterend', text2 )
+
+      let table = document.getElementById('tabel_d_approve_realisasi_kegiatan')
+      if( table ) {
+        table = table.querySelectorAll('tr')
+      } else {
+        table = []
+      }
+      let table2 = document.getElementById('tabel_d_approve_kegiatan_tambahan')
+      if(table2){
+        table2 = table2.querySelectorAll('tr')
+      } else {
+        table2 = []
+      }
+
       let rows = [...table, ...table2]
       for (row of rows) {
         let texts = []
@@ -176,7 +192,9 @@ module.exports = class Ekin extends Core {
         // keg.keg = keg.text[1]
         // keg.jml = keg.text[2]
         keg.stat = texts[3]
+        console.log(keg)
         if(act && keg.stat.toLowerCase().includes('belum') && keg.bulan === bulan){
+          // console.log(keg)
           act = act.split('\n')
           keg.kode = act[8].split("'").join('').split(",").join('').trim()
           // act.shift()

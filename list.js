@@ -14,27 +14,36 @@ module.exports = class List {
   getTgl() {
     for(let num of [ -1, 0 ]) {
       let now = moment()
-      let bln = moment().add(num, 'month').format('MMMM')
+      let e = moment().add(num, 'month')
 
-      let blnNum = moment().add(num, 'month').format('MM')
+      // console.log(e.format('DD-MM-YYYY'))
+      let bln = e.format('MMMM')
 
-      const startOfMonth = moment().add(num, 'month').startOf('month')
-      let endOfMonth = moment().add(num, 'month').endOf('month')
+      let blnNum = e.format('MM')
+
+      let startOfMonth = e.clone().startOf('month')
+      let endOfMonth = e.clone().endOf('month')
       let tglList = []
       let tglLength = 0
+
+      // console.log(endOfMonth.isBefore(now))
       
       if (endOfMonth.isBefore(now)){
-        now = endOfMonth
+        now = endOfMonth.clone()
       }
 
+
       while (startOfMonth.isBefore(now)) {
+        // console.log(startOfMonth.isBefore(now))
+        // console.log(now.day())
+        // console.log(now.day())
         if (now.day() !== 0) {
           tglList.push(now.format('DD MM YYYY'))
           tglLength++
         }
         now = now.clone().add(-1, 'day')
       }
-      now = endOfMonth
+      // now = endOfMonth
   
       if(bln === 'November'){
         bln = 'Nopember'
@@ -43,10 +52,10 @@ module.exports = class List {
       this.tgl[num] = {
         tglList,
         tglLength,
-        tglSum: moment().daysInMonth(),
+        tglSum: e.daysInMonth(),
         bln: bln.toUpperCase(),
         blnNum,
-        thn: moment().format('YYYY')
+        thn: e.format('YYYY')
       }
     }
   }
