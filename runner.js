@@ -12,7 +12,7 @@ module.exports = async () => {
     let tgls = Object.keys(ekin.tgl)
 
     for( a of tgls) {
-      if( a == 0 || (a == -1 && Number(ekin.moment().format('DD') < 5 ))) {
+      if( a == 0 || (a == -1 && Number(ekin.moment().format('DD')) < 5 )) {
         for( nama of lists ) {
           console.log(nama)
           await ekin.login(ekin.lists[nama])
